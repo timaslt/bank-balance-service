@@ -27,6 +27,6 @@ public class BankStatementController {
     if (csvFile.isEmpty()) {
       return "Wrong input: file is empty.";
     }
-    return "";
+    return "Success";
   }
 }
