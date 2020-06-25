@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * Handles bank statement imports and exports via Rest API.
- */
+/** Handles bank statement imports and exports via Rest API. */
 @RequestMapping("/api")
 @Controller
 public class BankStatementController {
