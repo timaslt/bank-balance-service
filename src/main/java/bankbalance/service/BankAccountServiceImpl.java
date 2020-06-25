@@ -1,6 +1,6 @@
 package bankbalance.service;
 
-import bankbalance.model.Statement;
+import bankbalance.model.BankStatement;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,15 +13,21 @@ import java.util.List;
 
 /** Stores and exports bank statements. */
 @Service
-public class BankStatementServiceImpl implements BankStatementService {
+public class BankAccountServiceImpl implements BankAccountService {
 
+  /**
+   * Stores new bank statements into database.
+   *
+   * @param csvFile multipart file that holds statement data
+   * @return string status
+   */
   @Override
   public String saveStatementsFromCsv(MultipartFile csvFile) {
     String result = "";
-    List<Statement> bankStatements;
+    List<BankStatement> bankStatements;
     try {
       Reader reader = new BufferedReader(new InputStreamReader(csvFile.getInputStream()));
-      bankStatements = new CsvToBeanBuilder(reader).withType(Statement.class).build().parse();
+      bankStatements = new CsvToBeanBuilder(reader).withType(BankStatement.class).build().parse();
     } catch (IOException e) {
       e.printStackTrace();
       return "Failed to extract input stream from the file.";

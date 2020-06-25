@@ -3,7 +3,7 @@ package bankbalance.service;
 import org.springframework.web.multipart.MultipartFile;
 
 /** Interface for storing and exporting bank statements. */
-public interface BankStatementService {
+public interface BankAccountService {
 
   /**
    * Stores new bank statements.

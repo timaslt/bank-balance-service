@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 /**
  * Represents single bank statement.
  */
-public class Statement {
+public class BankStatement {
 
   @CsvBindByPosition(position = 0, required = true)
   private String accountNumber;

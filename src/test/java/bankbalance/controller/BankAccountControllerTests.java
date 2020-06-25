@@ -1,6 +1,6 @@
 package bankbalance.controller;
 
-import bankbalance.service.BankStatementService;
+import bankbalance.service.BankAccountService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +16,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/** Tests BankStatementController class. */
+/** Tests BankAccountController class. */
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(BankStatementController.class)
-public class BankStatementControllerTests {
+@WebMvcTest(BankAccountController.class)
+public class BankAccountControllerTests {
 
   @Autowired private MockMvc mvc;
 
-  @MockBean private BankStatementService bankStatementService;
+  @MockBean private BankAccountService bankAccountService;
 
   /** Test importBankStatement method creating post requests. */
   @Test
@@ -36,12 +36,12 @@ public class BankStatementControllerTests {
             + "2,2020-06-23 13:43:33,3,Payment for the car,3000.00,EUR";
     MockMultipartFile csvFile =
         new MockMultipartFile("file", "test1.csv", "text/csv", csvFileContent.getBytes());
-    when(bankStatementService.saveStatementsFromCsv(csvFile)).thenReturn("Success");
+    when(bankAccountService.saveStatementsFromCsv(csvFile)).thenReturn("Success");
     try {
       mvc.perform(multipart("/api/import").file(csvFile))
           .andExpect(status().isOk())
           .andExpect(content().string("Success"));
-      verify(bankStatementService, times(1)).saveStatementsFromCsv(csvFile);
+      verify(bankAccountService, times(1)).saveStatementsFromCsv(csvFile);
     } catch (Exception e) {
       e.printStackTrace();
       fail("importBankStatementTest: error making bank statement import as csv file.");
@@ -53,7 +53,7 @@ public class BankStatementControllerTests {
       mvc.perform(multipart("/api/import").file(txtFile))
           .andExpect(status().isOk())
           .andExpect(content().string("Input error: wrong file type."));
-      verify(bankStatementService, times(0)).saveStatementsFromCsv(txtFile);
+      verify(bankAccountService, times(0)).saveStatementsFromCsv(txtFile);
     } catch (Exception e) {
       e.printStackTrace();
       fail("importBankStatementTest: error making invalid file type import (as txt file).");
@@ -65,7 +65,7 @@ public class BankStatementControllerTests {
       mvc.perform(multipart("/api/import").file(emptyFile))
           .andExpect(status().isOk())
           .andExpect(content().string("Wrong input: file is empty."));
-      verify(bankStatementService, times(0)).saveStatementsFromCsv(emptyFile);
+      verify(bankAccountService, times(0)).saveStatementsFromCsv(emptyFile);
     } catch (Exception e) {
       e.printStackTrace();
       fail("importBankStatementTest: error making invalid file type import (as txt file).");

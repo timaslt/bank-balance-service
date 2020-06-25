@@ -1,6 +1,6 @@
 package bankbalance.controller;
 
-import bankbalance.service.BankStatementService;
+import bankbalance.service.BankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,13 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 /** Handles bank statement imports and exports via Rest API. */
 @RequestMapping("/api")
 @Controller
-public class BankStatementController {
+public class BankAccountController {
 
-  private final BankStatementService bankStatementService;
+  private final BankAccountService bankAccountService;
 
   @Autowired
-  public BankStatementController(BankStatementService bankStatementService) {
-    this.bankStatementService = bankStatementService;
+  public BankAccountController(BankAccountService bankAccountService) {
+    this.bankAccountService = bankAccountService;
   }
 
   /**
@@ -36,6 +36,6 @@ public class BankStatementController {
     if (csvFile.isEmpty()) {
       return "Wrong input: file is empty.";
     }
-    return bankStatementService.saveStatementsFromCsv(csvFile);
+    return bankAccountService.saveStatementsFromCsv(csvFile);
   }
 }

@@ -9,15 +9,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/** Tests BankStatementService class. */
+/** Tests BankAccountService class. */
 @ExtendWith(SpringExtension.class)
-public class BankStatementServiceTests {
+public class BankAccountServiceTests {
 
-  private static BankStatementServiceImpl bankStatementService;
+  private static BankAccountServiceImpl bankAccountService;
 
   @BeforeAll
   public static void setUp() {
-    bankStatementService = new BankStatementServiceImpl();
+    bankAccountService = new BankAccountServiceImpl();
   }
 
   /**
@@ -36,7 +36,7 @@ public class BankStatementServiceTests {
         new MockMultipartFile("file", "test1.csv", "text/csv", validContent.getBytes());
     assertEquals(
         "Success",
-        bankStatementService.saveStatementsFromCsv(csvFile),
+        bankAccountService.saveStatementsFromCsv(csvFile),
         "saveStatementsFromCsvTest: valid csv file was not saved.");
 
     // Using CSV that does not have mandatory field (account number in 4th row).
@@ -48,7 +48,7 @@ public class BankStatementServiceTests {
     csvFile = new MockMultipartFile("file", "test1.csv", "text/csv", invalidContent.getBytes());
     assertEquals(
         "Failed to read from the file.",
-        bankStatementService.saveStatementsFromCsv(csvFile),
+        bankAccountService.saveStatementsFromCsv(csvFile),
         "saveStatementsFromCsvTest: wrong output while saving invalid csv file");
   }
 }
