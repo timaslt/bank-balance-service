@@ -29,13 +29,13 @@ public class BankStatementControllerTests {
   @Test
   public void importBankStatementTest() {
     // Importing valid csv file
-    String csvFileContents =
+    String csvFileContent =
         "1,2020-06-23 13:43:33,3,,419.99,EUR\n"
             + "3,2020-03-21 09:02:33,4,For food,22.50,EUR\n"
             + "4,2020-06-23 13:43:33,1,,32.00,EUR\n"
             + "2,2020-06-23 13:43:33,3,Payment for the car,3000.00,EUR";
     MockMultipartFile csvFile =
-        new MockMultipartFile("file", "test1.csv", "text/csv", csvFileContents.getBytes());
+        new MockMultipartFile("file", "test1.csv", "text/csv", csvFileContent.getBytes());
     when(bankStatementService.saveStatementsFromCsv(csvFile)).thenReturn("Success");
     try {
       mvc.perform(multipart("/api/import").file(csvFile))
@@ -48,7 +48,7 @@ public class BankStatementControllerTests {
     }
     // Importing file with invalid file type
     MockMultipartFile txtFile =
-        new MockMultipartFile("file", "test2.txt", "text/plain", csvFileContents.getBytes());
+        new MockMultipartFile("file", "test2.txt", "text/plain", csvFileContent.getBytes());
     try {
       mvc.perform(multipart("/api/import").file(txtFile))
           .andExpect(status().isOk())

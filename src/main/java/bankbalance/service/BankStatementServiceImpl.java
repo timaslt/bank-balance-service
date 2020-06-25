@@ -24,6 +24,9 @@ public class BankStatementServiceImpl implements BankStatementService {
       bankStatements = new CsvToBeanBuilder(reader).withType(Statement.class).build().parse();
     } catch (IOException e) {
       e.printStackTrace();
+      return "Failed to extract input stream from the file.";
+    } catch (RuntimeException e) {
+      e.printStackTrace();
       return "Failed to read from the file.";
     }
     return "Success";
