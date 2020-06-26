@@ -21,4 +21,14 @@ public interface BankAccountService {
    * @return string as csv file content
    */
   String getCsvFromStatements(String dateFrom, String dateTo);
+
+  /**
+   * Builds a string consisting of all balances in the period.
+   *
+   * @param accountNumber string account id
+   * @param dateFrom string represents optional date in format yyyy-MM-dd
+   * @param dateTo string represents optional date in format yyyy-MM-dd
+   * @return string result as a text
+   */
+  String getAccountBalance(String accountNumber, String dateFrom, String dateTo);
 }
