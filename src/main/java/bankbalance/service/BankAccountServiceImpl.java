@@ -11,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /** Stores and exports bank statements. */
@@ -46,5 +48,38 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
     bankAccountDao.insertBankStatements(bankStatements);
     return "Success";
+  }
+
+  /**
+   * Extracts bank statements from database and returns it as a csv file content.
+   *
+   * @param dateFrom string represents optional date in format yyyy-MM-dd
+   * @param dateTo string represents optional date in format yyyy-MM-dd
+   * @return string that consists of csv content
+   */
+  @Override
+  public String getCsvFromStatements(String dateFrom, String dateTo) {
+    LocalDateTime dateTimeFrom;
+    LocalDateTime dateTimeTo;
+    if (dateFrom == null || dateFrom.isEmpty()) {
+      dateTimeFrom = LocalDateTime.of(1900, 1, 1, 0, 0, 0);
+    } else {
+      dateTimeFrom =
+          LocalDateTime.parse(
+              dateFrom + " 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+    if (dateTo == null || dateTo.isEmpty()) {
+      dateTimeTo = LocalDateTime.now();
+    } else {
+      dateTimeTo =
+          LocalDateTime.parse(
+              dateTo + " 23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+    List<BankStatement> statements = bankAccountDao.getBankStatements(dateTimeFrom, dateTimeTo);
+    String csvFileAsString = "";
+    for (BankStatement st : statements) {
+      csvFileAsString += st + "\n";
+    }
+    return csvFileAsString;
   }
 }

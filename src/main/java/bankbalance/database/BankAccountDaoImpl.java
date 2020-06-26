@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /** Communicates with database and inserts, updates, selects data from tables. */
@@ -46,5 +47,29 @@ public class BankAccountDaoImpl implements BankAccountDao {
               statement.getAmount() * 100,
               statement.getBeneficiaryAccountNumber());
         });
+  }
+
+    /**
+     * Selects list of bank statements from bank_statement within specified period.
+     *
+     * @param dateFrom start of the period
+     * @param dateTo end of the period
+     * @return list of bank statements
+     */
+  @Override
+  public List<BankStatement> getBankStatements(LocalDateTime dateFrom, LocalDateTime dateTo) {
+    List<BankStatement> statements =
+        jdbcTemplate.query(
+            "SELECT * FROM bank_statement WHERE operation_date >= ? AND operation_date <= ?",
+            new Object[] {dateFrom, dateTo},
+            (rs, rowNum) ->
+                new BankStatement(
+                    rs.getString("account_number"),
+                    rs.getTimestamp("operation_date").toLocalDateTime(),
+                    rs.getString("beneficiary_number"),
+                    rs.getString("description"),
+                    rs.getBigDecimal("amount").doubleValue() / 100,
+                    rs.getString("currency")));
+    return statements;
   }
 }
