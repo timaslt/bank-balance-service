@@ -4,10 +4,9 @@ import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvDate;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-/**
- * Represents single bank statement.
- */
+/** Represents single bank statement. */
 public class BankStatement {
 
   @CsvBindByPosition(position = 0, required = true)
@@ -28,6 +27,23 @@ public class BankStatement {
 
   @CsvBindByPosition(position = 5, required = true)
   private String currency;
+
+  public BankStatement() {}
+
+  public BankStatement(
+      String accountNumber,
+      LocalDateTime date,
+      String beneficiaryAccountNumber,
+      String comment,
+      double amount,
+      String currency) {
+    this.accountNumber = accountNumber;
+    this.date = date;
+    this.beneficiaryAccountNumber = beneficiaryAccountNumber;
+    this.comment = comment;
+    this.amount = amount;
+    this.currency = currency;
+  }
 
   public String getAccountNumber() {
     return accountNumber;
@@ -81,7 +97,7 @@ public class BankStatement {
   public String toString() {
     return accountNumber
         + ','
-        + date
+        + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
         + ','
         + beneficiaryAccountNumber
         + ','
