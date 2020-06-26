@@ -1,24 +1,26 @@
 package bankbalance.service;
 
-import org.junit.jupiter.api.BeforeAll;
+import bankbalance.database.BankAccountDao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /** Tests BankAccountService class. */
 @ExtendWith(SpringExtension.class)
 public class BankAccountServiceTests {
 
-  private static BankAccountServiceImpl bankAccountService;
+  @Mock BankAccountDao databaseMock;
 
-  @BeforeAll
-  public static void setUp() {
-    bankAccountService = new BankAccountServiceImpl();
-  }
+  @InjectMocks private static BankAccountServiceImpl bankAccountService;
 
   /**
    * Test saveStatementsFromCsv method using mock multipart files. Checking that all mandatory
@@ -38,6 +40,7 @@ public class BankAccountServiceTests {
         "Success",
         bankAccountService.saveStatementsFromCsv(csvFile),
         "saveStatementsFromCsvTest: valid csv file was not saved.");
+    verify(databaseMock, times(1)).insertBankStatements(anyList());
 
     // Using CSV that does not have mandatory field (account number in 4th row).
     String invalidContent =

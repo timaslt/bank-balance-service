@@ -1,7 +1,9 @@
 package bankbalance.service;
 
+import bankbalance.database.BankAccountDao;
 import bankbalance.model.BankStatement;
 import com.opencsv.bean.CsvToBeanBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +16,13 @@ import java.util.List;
 /** Stores and exports bank statements. */
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
+
+  private final BankAccountDao bankAccountDao;
+
+  @Autowired
+  public BankAccountServiceImpl(BankAccountDao bankAccountDao) {
+    this.bankAccountDao = bankAccountDao;
+  }
 
   /**
    * Stores new bank statements into database.
@@ -35,6 +44,7 @@ public class BankAccountServiceImpl implements BankAccountService {
       e.printStackTrace();
       return "Failed to read from the file.";
     }
+    bankAccountDao.insertBankStatements(bankStatements);
     return "Success";
   }
 }

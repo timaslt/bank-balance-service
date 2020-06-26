@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface BankAccountDao {
 
-  void insertBankStatement(List<BankStatement> bankStatements);
+  void insertBankStatements(List<BankStatement> bankStatements);
 }
