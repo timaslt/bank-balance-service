@@ -49,6 +49,13 @@ public class BankAccountDaoImpl implements BankAccountDao {
         });
   }
 
+    /**
+     * Selects list of bank statements from bank_statement within specified period.
+     *
+     * @param dateFrom start of the period
+     * @param dateTo end of the period
+     * @return list of bank statements
+     */
   @Override
   public List<BankStatement> getBankStatements(LocalDateTime dateFrom, LocalDateTime dateTo) {
     List<BankStatement> statements =

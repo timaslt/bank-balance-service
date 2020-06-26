@@ -3,10 +3,7 @@ package bankbalance.controller;
 import bankbalance.service.BankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /** Handles bank statement imports and exports via Rest API. */
@@ -37,5 +34,21 @@ public class BankAccountController {
       return "Wrong input: file is empty.";
     }
     return bankAccountService.saveStatementsFromCsv(csvFile);
+  }
+
+  /**
+   * Handles get request by returning csv file with bank statements from during the specified period
+   * or from the start till now.
+   *
+   * @param dateFrom string represents optional date in format yyyy-MM-dd
+   * @param dateTo string represents optional date in format yyyy-MM-dd
+   * @return csv file
+   */
+  @GetMapping(value = "/export", produces = "text/csv")
+  @ResponseBody
+  public String exportBankStatement(
+      @RequestParam(required = false) String dateFrom,
+      @RequestParam(required = false) String dateTo) {
+    return bankAccountService.getCsvFromStatements(dateFrom, dateTo);
   }
 }

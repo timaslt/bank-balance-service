@@ -12,4 +12,13 @@ public interface BankAccountService {
    * @return string status
    */
   String saveStatementsFromCsv(MultipartFile csvFile);
+
+  /**
+   * Builds a string consisting of all bank statements during the period in csv file format.
+   *
+   * @param dateFrom string represents optional date in format yyyy-MM-dd
+   * @param dateTo string represents optional date in format yyyy-MM-dd
+   * @return string as csv file content
+   */
+  String getCsvFromStatements(String dateFrom, String dateTo);
 }
