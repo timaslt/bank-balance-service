@@ -1,0 +1,27 @@
+// Initial tables
+CREATE TABLE bank_account (
+   	account_number varchar(255) NOT NULL,
+	balance bigint NOT NULL, //balance represents cents
+	currency varchar(255) NOT NULL,
+   	PRIMARY KEY (account_number)
+);
+
+CREATE TABLE bank_statement (
+   	account_number varchar(255) NOT NULL,
+   	operation_date timestamp without time zone NOT NULL,
+	beneficiary_number varchar(255) NOT NULL,
+   	description varchar(255),
+	amount bigint NOT NULL, //amount represents cents
+	currency varchar(255) NOT NULL,
+   	FOREIGN KEY (account_number) REFERENCES bank_account(account_number),
+	FOREIGN KEY (beneficiary_number) REFERENCES bank_account(account_number)
+);
+
+//Creating bank accounts:
+INSERT INTO bank_account (account_number, balance, currency)
+VALUES
+	(1, 50000, 'EUR'),
+	(2, 55000, 'EUR'),
+	(3, 60000, 'USD'),
+	(4, 70000, 'USD'),
+	(5, 80000, 'EUR')
