@@ -51,4 +51,21 @@ public class BankAccountController {
       @RequestParam(required = false) String dateTo) {
     return bankAccountService.getCsvFromStatements(dateFrom, dateTo);
   }
+
+  /**
+   * Handles get request for calculating bank account balance by returning txt file.
+   *
+   * @param accountNumber string bank account id
+   * @param dateFrom string represents optional date in format yyyy-MM-dd
+   * @param dateTo string represents optional date in format yyyy-MM-dd
+   * @return txt file
+   */
+  @GetMapping(value = "/balance", produces = "text/plain")
+  @ResponseBody
+  public String calculateAccountBalance(
+          @RequestParam(required = true) String accountNumber,
+          @RequestParam(required = false) String dateFrom,
+          @RequestParam(required = false) String dateTo) {
+    return bankAccountService.getAccountBalance(accountNumber, dateFrom, dateTo);
+  }
 }
