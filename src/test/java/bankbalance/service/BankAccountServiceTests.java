@@ -24,7 +24,7 @@ public class BankAccountServiceTests {
 
   @Mock BankAccountDao databaseMock;
 
-  @InjectMocks private static BankAccountServiceImpl bankAccountService;
+  @InjectMocks private BankAccountServiceImpl bankAccountService;
 
   /**
    * Test saveStatementsFromCsv method using mock multipart files. Checking that all mandatory
